@@ -10,5 +10,5 @@ import com.example.cafeskon.model.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer>{
-	public Optional<Cart> findByCafeUser(CafeUser cafeUser);
+	public Optional<Cart> findByCartItems_Customer(CafeUser user);
 }

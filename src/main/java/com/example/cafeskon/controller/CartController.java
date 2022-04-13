@@ -28,7 +28,7 @@ public class CartController {
 	
 	@GetMapping("/")
 	public ResponseEntity<Cart> getCart(@RequestBody String username){
-		Optional<Cart> cart = cartRepository.findByCafeUser(userRepository.findById(username).get());
+		Optional<Cart> cart = cartRepository.findByCartItems_Customer(userRepository.findById(username).get());
 		if(!cart.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

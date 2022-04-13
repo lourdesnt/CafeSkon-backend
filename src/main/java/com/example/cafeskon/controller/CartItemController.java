@@ -35,7 +35,7 @@ public class CartItemController {
 	@GetMapping("{username}/list")
 	public ResponseEntity<List<CartItem>> getAllItemsByUser(@PathVariable String username){
 		List<CartItem> items = new ArrayList<CartItem>();
-		items = itemRepository.findByCafeUser(userRepository.findById(username).get());
+		items = itemRepository.findByCustomer(userRepository.findById(username).get());
 		if(items.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

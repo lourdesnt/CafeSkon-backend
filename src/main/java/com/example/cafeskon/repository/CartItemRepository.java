@@ -10,8 +10,6 @@ import com.example.cafeskon.model.CafeUser;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Integer>{
-	public List<CartItem> findByCafeUser (CafeUser cafeUser);
-	public void deleteByCafeUserAndProduct(Integer cafeUserId, Integer productId);
-	public void updateQuantity(int quantity, Integer productId, Integer cafeUserId);
+	public List<CartItem> findByCustomer (CafeUser cafeUser);
 	
 }

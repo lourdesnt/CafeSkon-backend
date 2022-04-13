@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -40,8 +42,9 @@ public class Product {
 //	@JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 //	private Set<Category> categories = new HashSet<>();
 	
-	@ManyToOne
-    @JoinColumn(name="category_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="category_id", referencedColumnName="id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
 
 	public Product(String name, String description, double price, String image, Category category) {

@@ -2,12 +2,15 @@ package com.example.cafeskon.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "reviews")
@@ -23,8 +26,9 @@ public class Review {
 	@Column(name = "user_comment", nullable = false, length = 1000)
     private String comment;
 	
-	@ManyToOne
-    @JoinColumn(name = "product", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "product_id", referencedColumnName="id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Product product;
 	
 	@Column(name="rating", columnDefinition = "int default 0")

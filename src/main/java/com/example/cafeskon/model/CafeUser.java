@@ -1,6 +1,7 @@
 package com.example.cafeskon.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -9,6 +10,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cafe_users", uniqueConstraints = { 
@@ -33,8 +36,9 @@ public class CafeUser {
 //	@JoinTable(name = "cafeuser_roles", joinColumns = @JoinColumn(name = "cafeuser_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 //	private Set<Role> roles = new HashSet<>();
 	
-	@ManyToOne
-    @JoinColumn(name="role_id")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name="role_id", referencedColumnName="id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Role role;
 
 	public String getUsername() {

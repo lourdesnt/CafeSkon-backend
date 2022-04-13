@@ -2,9 +2,9 @@ package com.example.cafeskon.model;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +21,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Cart cart;
 	
 	@NotBlank
