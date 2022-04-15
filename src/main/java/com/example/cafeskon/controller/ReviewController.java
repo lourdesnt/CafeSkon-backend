@@ -30,7 +30,7 @@ public class ReviewController {
 	private ProductRepository productRepository;
 	
 	@GetMapping("/{productId}")
-	public ResponseEntity<List<Review>> getAllImagesByUsername(@PathVariable("productId") Integer productId) {
+	public ResponseEntity<List<Review>> getAllReviewsByProduct(@PathVariable("productId") Integer productId) {
 		try {
 			if (!productRepository.existsById(productId)) {
 					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
