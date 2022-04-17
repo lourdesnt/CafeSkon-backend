@@ -54,6 +54,28 @@ public class ProductController {
 		}
 	}
 	
+	@GetMapping("/category/{categoryId}")
+	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("categoryId") Integer id) {
+		List<Product> products = new ArrayList<Product>();
+		productRepository.findByCategory(id).forEach(products::add);
+		if(products.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/{name}")
+	public ResponseEntity<List<Product>> getProductsByName(@PathVariable("name") String name) {
+		List<Product> products = new ArrayList<Product>();
+		productRepository.findByNameEquals(name).forEach(products::add);
+		if(products.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+	}
+	
 	@PostMapping("/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         Optional<Category> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
