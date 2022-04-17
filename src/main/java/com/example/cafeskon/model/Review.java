@@ -34,6 +34,10 @@ public class Review {
 	@Column(name="rating", columnDefinition = "int default 0")
     private int rating;
 
+	public Review() {
+		
+	}
+
 	public Review(String username, String comment, Product product, int rating) {
 		super();
 		this.username = username;

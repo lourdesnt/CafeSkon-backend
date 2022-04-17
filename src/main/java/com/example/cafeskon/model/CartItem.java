@@ -39,6 +39,10 @@ public class CartItem {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Cart cart;
 
+	public CartItem() {
+		
+	}
+
 	public CartItem(int quantity, double price, Product product, CafeUser customer, Cart cart) {
 		this.quantity = quantity;
 		this.price = price;

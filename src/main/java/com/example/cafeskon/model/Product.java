@@ -47,6 +47,10 @@ public class Product {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
 
+	public Product() {
+		
+	}
+
 	public Product(String name, String description, double price, String image, Category category) {
 		this.name = name;
 		this.description = description;

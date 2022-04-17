@@ -29,6 +29,16 @@ public class Cart {
 	@JoinColumn(name = "order_id", referencedColumnName="id", nullable = false)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Order order;
+	
+	public Cart() {
+		
+	}
+
+	public Cart(List<CartItem> cartItems, Order order) {
+		super();
+		this.cartItems = cartItems;
+		this.order = order;
+	}
 
 	public Integer getId() {
 		return id;

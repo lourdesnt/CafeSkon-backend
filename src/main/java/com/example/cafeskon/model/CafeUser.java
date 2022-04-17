@@ -41,6 +41,19 @@ public class CafeUser {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Role role;
 
+	public CafeUser() {
+	
+	}
+
+	public CafeUser(@Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
+		@NotBlank @Size(min = 6) String password, Role role) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.role = role;
+	}
+
 	public String getUsername() {
 		return username;
 	}

@@ -57,7 +57,7 @@ public class ProductController {
 	@GetMapping("/category/{categoryId}")
 	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("categoryId") Integer id) {
 		List<Product> products = new ArrayList<Product>();
-		productRepository.findByCategory(id).forEach(products::add);
+		productRepository.findByCategory(categoryRepository.findById(id).get()).forEach(products::add);
 		if(products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

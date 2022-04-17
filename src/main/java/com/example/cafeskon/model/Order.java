@@ -47,6 +47,10 @@ public class Order {
 	@Column(name = "order_date")
 	private Date orderDate;
 
+	public Order() {
+		
+	}
+
 	public Order(Cart cart, @NotBlank String firstName, @NotBlank String lastName, @NotBlank String address,
 			@NotBlank @Size(min = 5) String postalCode, @NotBlank @Size(max = 9) String phone, @NotBlank String payment,
 			Date orderDate) {
