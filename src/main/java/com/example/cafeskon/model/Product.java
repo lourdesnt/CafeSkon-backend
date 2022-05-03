@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -38,20 +39,17 @@ public class Product {
 	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<Review> reviews;
 	
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	@JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-//	private Set<Category> categories = new HashSet<>();
+	@NotBlank
+	private ECategory category;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name="category_id", referencedColumnName="id", nullable = false)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Category category;
-
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	private List<ProductOrderJoin> productOrder;
+	
 	public Product() {
 		
 	}
 
-	public Product(String name, String description, double price, String image, Category category) {
+	public Product(String name, String description, double price, String image, ECategory category) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -107,11 +105,11 @@ public class Product {
 		this.reviews = reviews;
 	}
 
-	public Category getCategory() {
+	public ECategory getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(ECategory category) {
 		this.category = category;
 	}
 

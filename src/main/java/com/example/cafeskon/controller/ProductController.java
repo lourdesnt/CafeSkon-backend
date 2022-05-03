@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.cafeskon.model.Category;
+import com.example.cafeskon.model.ECategory;
 import com.example.cafeskon.model.Product;
-import com.example.cafeskon.repository.CategoryRepository;
 import com.example.cafeskon.repository.ProductRepository;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -28,9 +27,6 @@ public class ProductController {
 	
 	@Autowired
 	private ProductRepository productRepository;
-	
-	@Autowired
-	private CategoryRepository categoryRepository;
 	
 	@GetMapping("/list")
 	public ResponseEntity<List<Product>> getAllProducts(){
@@ -54,10 +50,10 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping("/category/{categoryId}")
-	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("categoryId") Integer id) {
+	@GetMapping("/category/{category}")
+	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("category") ECategory category) {
 		List<Product> products = new ArrayList<Product>();
-		productRepository.findByCategory(categoryRepository.findById(id).get()).forEach(products::add);
+		productRepository.findByCategory(category).forEach(products::add);
 		if(products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
@@ -78,21 +74,12 @@ public class ProductController {
 	
 	@PostMapping("/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Optional<Category> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
-        if (!optionalCategory.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
         productRepository.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 	
 	@PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
-        Optional<Category> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
-        if (!optionalCategory.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        Category category = optionalCategory.get();
         Optional<Product> actualProduct = productRepository.findById(id);
         if (actualProduct.isPresent()) {
         	Product productToEdit = actualProduct.get();
@@ -100,7 +87,7 @@ public class ProductController {
         	productToEdit.setDescription(product.getDescription());
         	productToEdit.setPrice(product.getPrice());
         	productToEdit.setImage(product.getImage());
-        	productToEdit.setCategory(category);
+        	productToEdit.setCategory(product.getCategory());
         	return new ResponseEntity<>(productRepository.save(productToEdit), HttpStatus.OK);
         } else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

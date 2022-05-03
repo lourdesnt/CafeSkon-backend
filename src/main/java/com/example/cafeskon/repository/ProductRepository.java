@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.cafeskon.model.Category;
+import com.example.cafeskon.model.ECategory;
 import com.example.cafeskon.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer>{
 
 	List<Product> findByNameEquals(String name);
-	List<Product> findByCategory(Category category);
+	List<Product> findByCategory(ECategory category);
 }

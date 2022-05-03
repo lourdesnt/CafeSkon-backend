@@ -1,17 +1,25 @@
 package com.example.cafeskon.model;
 
 import java.sql.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="orders")
@@ -21,8 +29,13 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-	private Cart cart;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "customer_id", nullable = false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private CafeUser customer;
+	
+	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+	private List<ProductOrderJoin> productOrder;
 	
 	@NotBlank
 	private String firstName;
@@ -51,20 +64,6 @@ public class Order {
 		
 	}
 
-	public Order(Cart cart, @NotBlank String firstName, @NotBlank String lastName, @NotBlank String address,
-			@NotBlank @Size(min = 5) String postalCode, @NotBlank @Size(max = 9) String phone, @NotBlank String payment,
-			Date orderDate) {
-		super();
-		this.cart = cart;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.postalCode = postalCode;
-		this.phone = phone;
-		this.payment = payment;
-		this.orderDate = orderDate;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -73,13 +72,6 @@ public class Order {
 		this.id = id;
 	}
 
-	public Cart getCart() {
-		return cart;
-	}
-
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -135,6 +127,14 @@ public class Order {
 
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
+	}
+
+	public CafeUser getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CafeUser customer) {
+		this.customer = customer;
 	}
 	
 	
