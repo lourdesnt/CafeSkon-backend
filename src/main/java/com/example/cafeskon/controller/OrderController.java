@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cafeskon.model.Order;
 import com.example.cafeskon.repository.OrderRepository;
+import com.example.cafeskon.repository.ProductOrderJoinRepository;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
@@ -25,6 +26,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderRepository orderRepository;
+	
+	@Autowired
+	private ProductOrderJoinRepository prodOrderRepository;
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<Order>> getAllOrders(){
@@ -48,7 +52,7 @@ public class OrderController {
     }
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<HttpStatus> eliminarTutorial(@PathVariable("id") Integer id) {
+	public ResponseEntity<HttpStatus> deleteOrder(@PathVariable("id") Integer id) {
 		try {
 			orderRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

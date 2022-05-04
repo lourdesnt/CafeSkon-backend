@@ -2,19 +2,18 @@ package com.example.cafeskon.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cafe_users", uniqueConstraints = { 
@@ -35,6 +34,8 @@ public class CafeUser {
 	private String password;
 
 	@NotBlank
+	@Column(columnDefinition = "ENUM('ADMIN','USER')")
+    @Enumerated(EnumType.STRING)
 	private ERole role;
 	
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
