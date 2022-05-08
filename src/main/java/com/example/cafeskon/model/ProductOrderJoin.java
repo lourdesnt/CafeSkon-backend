@@ -32,6 +32,10 @@ public class ProductOrderJoin {
 	private Integer quantity;
 	
 
+	public ProductOrderJoin() {
+		
+	}
+
 	public Order getOrder() {
 		return order;
 	}
