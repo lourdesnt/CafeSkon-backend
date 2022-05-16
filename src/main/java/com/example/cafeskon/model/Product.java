@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +35,8 @@ public class Product {
 	@Column(name = "prod_image")
     private String image;
 	
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
     private List<Review> reviews;
 	
 	@NotBlank

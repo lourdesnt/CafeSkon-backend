@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -33,7 +34,7 @@ public class CafeUser {
 	@Size(min = 6)
 	private String password;
 
-	@NotBlank
+	@NotNull
 	@Column(columnDefinition = "ENUM('ADMIN','USER')")
     @Enumerated(EnumType.STRING)
 	private ERole role;
@@ -46,7 +47,7 @@ public class CafeUser {
 	}
 
 	public CafeUser(@Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
-		@NotBlank @Size(min = 6) String password, ERole role) {
+		@NotBlank @Size(min = 6) String password, @NotNull ERole role) {
 		super();
 		this.username = username;
 		this.email = email;

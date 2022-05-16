@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.cafeskon.model.Product;
 import com.example.cafeskon.model.Review;
 import com.example.cafeskon.repository.ProductRepository;
 import com.example.cafeskon.repository.ReviewRepository;
@@ -22,21 +23,21 @@ import com.example.cafeskon.repository.ReviewRepository;
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
-	
+
 	@Autowired
 	private ReviewRepository reviewRepository;
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@GetMapping("/{productId}")
 	public ResponseEntity<List<Review>> getAllReviewsByProduct(@PathVariable("productId") Integer productId) {
 		try {
 			if (!productRepository.existsById(productId)) {
-					return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			    }
-			
-			List<Review> reviews = reviewRepository.findByProduct_Id(productId);
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			List<Review> reviews = productRepository.findById(productId).get().getReviews();
 
 			if (reviews.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -46,19 +47,21 @@ public class ReviewController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@PostMapping("/{productId}/new")
+
+	@PostMapping("{productId}/new")
 	public ResponseEntity<Review> createReview(@PathVariable("productId") Integer productId, @RequestBody Review newReview) {
 		try {
-			Review review = productRepository.findById(productId).map(product -> {
-			      newReview.setProduct(product); return reviewRepository.save(newReview);}).get();
-			
-			return new ResponseEntity<>(review, HttpStatus.CREATED);
+			Product product = productRepository.findById(productId).get();
+			product.getReviews().add(newReview);
+			reviewRepository.saveAll(product.getReviews());
+			productRepository.saveAndFlush(product);
+			System.out.println("Review created");
+			return new ResponseEntity<>(newReview, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@DeleteMapping("review/{id}")
 	public ResponseEntity<HttpStatus> deleteReview(@PathVariable("id") Integer id) {
 		try {

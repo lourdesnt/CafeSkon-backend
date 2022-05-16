@@ -26,10 +26,10 @@ public class Review {
 	@Column(name = "user_comment", nullable = false, length = 1000)
     private String comment;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "product_id", referencedColumnName="id", nullable = false)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Product product;
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "product_id", referencedColumnName="id", nullable = false)
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    private Product product;
 	
 	@Column(name="rating", columnDefinition = "int default 0")
     private int rating;
@@ -38,11 +38,10 @@ public class Review {
 		
 	}
 
-	public Review(String username, String comment, Product product, int rating) {
+	public Review(String username, String comment, int rating) {
 		super();
 		this.username = username;
 		this.comment = comment;
-		this.product = product;
 		this.rating = rating;
 	}
 
@@ -68,14 +67,6 @@ public class Review {
 
 	public void setComment(String comment) {
 		this.comment = comment;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
 	}
 
 	public int getRating() {

@@ -10,5 +10,5 @@ import com.example.cafeskon.model.Review;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer>{
 
-	public List<Review>findByProduct_Id(Integer id);
+	
 }
