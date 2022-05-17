@@ -1,7 +1,6 @@
 package com.example.cafeskon.model;
 
 import java.sql.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -31,8 +30,8 @@ public class Order {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CafeUser customer;
 	
-	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-	private List<ProductOrderJoin> productOrder;
+//	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+//	private List<ProductOrderJoin> productOrder;
 	
 	@NotBlank
 	private String firstName;
@@ -55,10 +54,22 @@ public class Order {
 	private String payment;
 	
 	@Column(name = "order_date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date orderDate;
 
 	public Order() {
 		
+	}
+	
+	public Order(OrderDto orderDto) {
+		this.id = orderDto.getId();
+		this.firstName = orderDto.getFirstName();
+		this.lastName = orderDto.getLastName();
+		this.address = orderDto.getAddress();
+		this.postalCode = orderDto.getPostalCode();
+		this.phone = orderDto.getPhone();
+		this.payment = orderDto.getPayment();
+		this.orderDate = orderDto.getOrderDate();
 	}
 
 	public Integer getId() {

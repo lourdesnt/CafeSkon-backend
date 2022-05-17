@@ -2,6 +2,8 @@ package com.example.cafeskon.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,44 +18,78 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cafeskon.model.Order;
+import com.example.cafeskon.model.OrderDto;
+import com.example.cafeskon.model.OrderListDto;
+import com.example.cafeskon.model.ProductOrderJoin;
+import com.example.cafeskon.repository.CafeUserRepository;
 import com.example.cafeskon.repository.OrderRepository;
 import com.example.cafeskon.repository.ProductOrderJoinRepository;
+import com.example.cafeskon.repository.ProductRepository;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Autowired
 	private ProductOrderJoinRepository prodOrderRepository;
 	
+	@Autowired
+	private CafeUserRepository userRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+
 	@GetMapping("/all")
-	public ResponseEntity<List<Order>> getAllOrders(){
-		List<Order> orders = new ArrayList<Order>();
-		orders = orderRepository.findAllByOrderByOrderDateDesc();
-		if(orders.isEmpty()) {
+	public ResponseEntity<List<OrderListDto>> getAllOrders() {
+		List<Order> orders = orderRepository.findAll();
+		List<OrderListDto> orderList = new ArrayList<OrderListDto>();
+		if (orders.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			return new ResponseEntity<>(orders, HttpStatus.OK);
+			orders.stream().forEach(o -> {
+				Map<String, Integer> productMap = prodOrderRepository.findByOrder(o).stream().collect(Collectors.toMap((ProductOrderJoin p) -> p.getProduct().getName(), (ProductOrderJoin p) -> p.getQuantity()));
+				orderList.add(new OrderListDto(o, productMap));
+			});
+			return new ResponseEntity<>(orderList, HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/new")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+	public ResponseEntity<Order> createOrder(@RequestBody final OrderDto order) {
 		try {
-			Order _order = orderRepository.save(order);
-			return new ResponseEntity<>(_order, HttpStatus.CREATED);
+//			productsOrder.stream().forEach(p -> {
+//				System.out.println(p.getOrder().getFirstName());
+//				orderRepository.save(p.getOrder());
+//				prodOrderRepository.save(p);
+//			});
+//			prodOrderRepository.flush();
+			
+			Order _order = new Order(order);
+			_order.setCustomer(userRepository.findById(order.getCustomerId()).get());
+			Order savedOrder = orderRepository.save(_order);
+			order.getProductMap().forEach((id,q) -> {
+				ProductOrderJoin prodOrder = new ProductOrderJoin();
+				prodOrder.setProduct(productRepository.findById(id).get());
+				prodOrder.setOrder(savedOrder);
+				prodOrder.setQuantity(q);
+				prodOrderRepository.save(prodOrder);
+			});
+			prodOrderRepository.flush();
+			return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-    }
-	
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HttpStatus> deleteOrder(@PathVariable("id") Integer id) {
 		try {
+			prodOrderRepository.deleteAll(prodOrderRepository.findByOrder(orderRepository.findById(id).get())); //deleteallbyorder??
 			orderRepository.deleteById(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

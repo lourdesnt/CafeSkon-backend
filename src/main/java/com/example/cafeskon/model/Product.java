@@ -44,8 +44,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
 	private ECategory category;
 	
-	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-	private List<ProductOrderJoin> productOrder;
+//	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+//	private List<ProductOrderJoin> productOrder;
 	
 	public Product() {
 		

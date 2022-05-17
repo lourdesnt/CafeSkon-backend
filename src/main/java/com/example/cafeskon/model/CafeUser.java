@@ -39,8 +39,8 @@ public class CafeUser {
     @Enumerated(EnumType.STRING)
 	private ERole role;
 	
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private List<Order> orders;
+//	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+//    private List<Order> orders;
 
 	public CafeUser() {
 	
@@ -87,13 +87,13 @@ public class CafeUser {
 		this.role = role;
 	}
 
-	public List<Order> getOrders() {
-		return orders;
-	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
+//	public List<Order> getOrders() {
+//		return orders;
+//	}
+//
+//	public void setOrders(List<Order> orders) {
+//		this.orders = orders;
+//	}
 	
 	
 }
