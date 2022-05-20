@@ -94,7 +94,6 @@ public class CafeUserController {
 	@DeleteMapping("/user/{username}")
 	public ResponseEntity<HttpStatus> deleteUser(@PathVariable("username") String username) {
 		try {
-			//imageRepository.findByImageUser_Username(username).stream().forEach(i -> imageRepository.delete(i));
 			cafeUserRepository.deleteById(username);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {

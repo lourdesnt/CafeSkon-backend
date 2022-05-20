@@ -26,31 +26,25 @@ public class Order {
 	private Integer id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CafeUser customer;
 	
 //	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
 //	private List<ProductOrderJoin> productOrder;
 	
-	@NotBlank
 	private String firstName;
 
-	@NotBlank
 	private String lastName;
 	
-	@NotBlank
 	private String address;
 	
-	@NotBlank
 	@Size(min = 5)
 	private String postalCode;
 	
-	@NotBlank
 	@Size(max = 9)
 	private String phone;
 	
-	@NotBlank
 	private String payment;
 	
 	@Column(name = "order_date")

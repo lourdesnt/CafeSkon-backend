@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class CafeSkonApplication {
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CafeSkonApplication.class, args);
 	}

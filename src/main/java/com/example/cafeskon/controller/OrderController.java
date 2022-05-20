@@ -67,18 +67,22 @@ public class OrderController {
 //				prodOrderRepository.save(p);
 //			});
 //			prodOrderRepository.flush();
-			
+			//System.out.println(order.getCustomerId());
+			//System.out.println(order.getProductMap());
 			Order _order = new Order(order);
 			_order.setCustomer(userRepository.findById(order.getCustomerId()).get());
 			Order savedOrder = orderRepository.save(_order);
+			//System.out.println(_order.getCustomer());
 			order.getProductMap().forEach((id,q) -> {
 				ProductOrderJoin prodOrder = new ProductOrderJoin();
 				prodOrder.setProduct(productRepository.findById(id).get());
-				prodOrder.setOrder(savedOrder);
+				prodOrder.setOrder(_order);
 				prodOrder.setQuantity(q);
+				System.out.println(prodOrder.getQuantity());
 				prodOrderRepository.save(prodOrder);
 			});
-			prodOrderRepository.flush();
+			//System.out.println(order.getProductMap());
+			orderRepository.flush();
 			return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
