@@ -39,7 +39,6 @@ public class Product {
 	@JoinColumn(name = "product_id")
     private List<Review> reviews;
 	
-	@NotBlank
 	@Column(columnDefinition = "ENUM('CAKE','COOKIE','DRINK','COFFEE')")
     @Enumerated(EnumType.STRING)
 	private ECategory category;
