@@ -1,8 +1,10 @@
 package com.example.cafeskon.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,29 @@ public class OrderController {
 				orderList.add(new OrderListDto(o, productMap));
 			});
 			return new ResponseEntity<>(orderList, HttpStatus.OK);
+		}
+	}
+	
+	@GetMapping("/order/{id}")
+	public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Integer id) {
+		Optional<Order> order = orderRepository.findById(id);
+		OrderDto orderDetails = new OrderDto();
+		if (!order.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			orderDetails.setId(order.get().getId());
+			orderDetails.setCustomerId(order.get().getCustomer().getUsername());
+			orderDetails.setFirstName(order.get().getFirstName());
+			orderDetails.setLastName(order.get().getLastName());
+			orderDetails.setAddress(order.get().getAddress());
+			orderDetails.setPostalCode(order.get().getPostalCode());
+			orderDetails.setPhone(order.get().getPhone());
+			orderDetails.setPayment(order.get().getPayment());
+			orderDetails.setOrderDate(order.get().getOrderDate());
+			Map<Integer, Integer> productMap = prodOrderRepository.findByOrder(order.get()).stream().collect(Collectors.toMap((ProductOrderJoin p) -> p.getProduct().getId(), (ProductOrderJoin p) -> p.getQuantity()));
+			HashMap<Integer, Integer> productHashMap = new HashMap<Integer, Integer>(productMap);
+			orderDetails.setProductMap(productHashMap);
+			return new ResponseEntity<>(orderDetails, HttpStatus.OK);
 		}
 	}
 
