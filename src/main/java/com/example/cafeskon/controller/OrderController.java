@@ -28,23 +28,45 @@ import com.example.cafeskon.repository.OrderRepository;
 import com.example.cafeskon.repository.ProductOrderJoinRepository;
 import com.example.cafeskon.repository.ProductRepository;
 
+/**
+ * Controlador para pedidos (Order)
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
+	/**
+	 * Repositorio de pedidos (tipo OrderRepository)
+	 */
 	@Autowired
 	private OrderRepository orderRepository;
 
+	/**
+	 * Repositorio de productos-pedidos (tipo ProductOrderJoinRepository)
+	 */
 	@Autowired
 	private ProductOrderJoinRepository prodOrderRepository;
 	
+	/**
+	 * Repositorio de usuarios (tipo CafeUserRepository)
+	 */
 	@Autowired
 	private CafeUserRepository userRepository;
 	
+	/**
+	 * Repositorio de productos (tipo ProductRepository)
+	 */
 	@Autowired
 	private ProductRepository productRepository;
 
+	/**
+	 * Método GET para obtener todos los pedidos (con los atributos del modelo DTO de OrderListDto)
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/all")
 	public ResponseEntity<List<OrderListDto>> getAllOrders() {
 		List<Order> orders = orderRepository.findAll();
@@ -60,6 +82,11 @@ public class OrderController {
 		}
 	}
 	
+	/**
+	 * Método GET para obtener un pedido por su ID (con los atributos del modelo DTO de OrderDto)
+	 * @param id ID del pedido
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/order/{id}")
 	public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Integer id) {
 		Optional<Order> order = orderRepository.findById(id);
@@ -83,21 +110,17 @@ public class OrderController {
 		}
 	}
 
+	/**
+	 * Método POST para crear un nuevo pedido
+	 * @param order Nuevo pedido
+	 * @return respuesta de la llamada
+	 */
 	@PostMapping("/new")
 	public ResponseEntity<Order> createOrder(@RequestBody final OrderDto order) {
 		try {
-//			productsOrder.stream().forEach(p -> {
-//				System.out.println(p.getOrder().getFirstName());
-//				orderRepository.save(p.getOrder());
-//				prodOrderRepository.save(p);
-//			});
-//			prodOrderRepository.flush();
-			//System.out.println(order.getCustomerId());
-			//System.out.println(order.getProductMap());
 			Order _order = new Order(order);
 			_order.setCustomer(userRepository.findById(order.getCustomerId()).get());
 			Order savedOrder = orderRepository.save(_order);
-			//System.out.println(_order.getCustomer());
 			order.getProductMap().forEach((id,q) -> {
 				ProductOrderJoin prodOrder = new ProductOrderJoin();
 				prodOrder.setProduct(productRepository.findById(id).get());
@@ -106,7 +129,6 @@ public class OrderController {
 				System.out.println(prodOrder.getQuantity());
 				prodOrderRepository.save(prodOrder);
 			});
-			//System.out.println(order.getProductMap());
 			orderRepository.flush();
 			return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -115,6 +137,11 @@ public class OrderController {
 		}
 	}
 
+	/**
+	 * Método DELETE para eliminar un pedido
+	 * @param id ID del pedido a eliminar
+	 * @return respuesta de la llamada
+	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HttpStatus> deleteOrder(@PathVariable("id") Integer id) {
 		try {

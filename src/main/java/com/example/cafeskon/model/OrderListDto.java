@@ -1,32 +1,69 @@
 package com.example.cafeskon.model;
 
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * Modelo DTO de pedido que estara incluido en lista de pedidos
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 public class OrderListDto {
 	
+	/**
+	 * Atributo correspondiente al ID del pedido (tipo Integer)
+	 */
 	private Integer id;
 	
+	/**
+	 * Atributo correspondiente al nombre del cliente que realiza el pedido (tipo String)
+	 */
 	private String firstName;
 
+	/**
+	 * Atributo correspondiente al apellido del cliente que realiza el pedido (tipo String)
+	 */
 	private String lastName;
 	
+	/**
+	 * Atributo correspondiente a la direccion de la vivienda del cliente que realiza el pedido (tipo String)
+	 */
 	private String address;
 	
+	/**
+	 * Atributo correspondiente al codigo postal de la vivienda del cliente que realiza el pedido (tipo String)
+	 */
 	private String postalCode;
 	
+	/**
+	 * Atributo correspondiente al telefono del cliente que realiza el pedido (tipo String)
+	 */
 	private String phone;
 	
+	/**
+	 * Atributo correspondiente al metodo de pago con el que se va a pagar el pedido (tipo String)
+	 */
 	private String payment;
 	
+	/**
+	 * Atributo correspondiente a la fecha en la que se realiza el pedido (tipo Date)
+	 */
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date orderDate;
 	
+	/**
+	 * Atributo correspondiente al map de productos por nombre y cantidad
+	 */
 	private Map<String, Integer> productMap;
 
+	/**
+	 * Constructor parametrizado
+	 * @param order Pedido
+	 * @param productMap Map de productos por nombre y cantidad
+	 */
 	public OrderListDto(Order order, Map<String, Integer> productMap) {
 		this.id = order.getId();
 		this.firstName = order.getFirstName();
@@ -39,6 +76,8 @@ public class OrderListDto {
 		this.productMap = productMap;
 	}
 
+	//GETTERS Y SETTERS
+	
 	public Integer getId() {
 		return id;
 	}

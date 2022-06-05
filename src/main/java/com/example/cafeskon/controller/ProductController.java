@@ -21,14 +21,27 @@ import com.example.cafeskon.model.ECategory;
 import com.example.cafeskon.model.Product;
 import com.example.cafeskon.repository.ProductRepository;
 
+/**
+ * Controlador para productos (Product)
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 	
+	/**
+	 * Repositorio de productos (tipo ProductRepository)
+	 */
 	@Autowired
 	private ProductRepository productRepository;
 	
+	/**
+	 * Método GET para obtener todos los productos
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/list")
 	public ResponseEntity<List<Product>> getAllProducts(){
 		List<Product> products = new ArrayList<Product>();
@@ -40,7 +53,11 @@ public class ProductController {
 		}
 	}
 	
-	
+	/**
+	 * Método GET para obtener producto por ID
+	 * @param id ID del producto
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Product> getProductById(@PathVariable("id") Integer id) {
 		Optional<Product> product = productRepository.findById(id);
@@ -51,6 +68,11 @@ public class ProductController {
 		}
 	}
 	
+	/**
+	 * Método GET para obtener productos por categoria
+	 * @param category Categoria de producto
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/category/{category}")
 	public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("category") ECategory category) {
 		List<Product> products = new ArrayList<Product>();
@@ -62,6 +84,11 @@ public class ProductController {
 		}
 	}
 	
+	/**
+	 * Método GET para obtener producto por nombre
+	 * @param name Nombre del producto
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/{name}")
 	public ResponseEntity<List<Product>> getProductsByName(@PathVariable("name") String name) {
 		List<Product> products = new ArrayList<Product>();
@@ -73,12 +100,23 @@ public class ProductController {
 		}
 	}
 	
+	/**
+	 * Método POST para crear un nuevo producto
+	 * @param product Nuevo producto
+	 * @return respuesta de la llamada
+	 */
 	@PostMapping("/add")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         productRepository.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 	
+	/**
+	 * Método PUT para modificar un producto
+	 * @param id ID del producto a modificar
+	 * @param product Producto modificado
+	 * @return respuesta de la llamada
+	 */
 	@PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
         Optional<Product> actualProduct = productRepository.findById(id);
@@ -95,6 +133,11 @@ public class ProductController {
 		}
     }
 	
+	/**
+	 * Método DELETE para eliminar un producto
+	 * @param id ID del producto a eliminar
+	 * @return respuesta de la llamada
+	 */
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") Integer id) {
 		try {

@@ -19,17 +19,34 @@ import com.example.cafeskon.model.Review;
 import com.example.cafeskon.repository.ProductRepository;
 import com.example.cafeskon.repository.ReviewRepository;
 
+/**
+ * Controlador para reviews de producto (Review)
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
 
+	/**
+	 * Repositorio de reviews (tipo ReviewRepository)
+	 */
 	@Autowired
 	private ReviewRepository reviewRepository;
 
+	/**
+	 * Repositorio de productos (tipo ProductRepository)
+	 */
 	@Autowired
 	private ProductRepository productRepository;
 
+	/**
+	 * Método GET para obtener todas las reviews de un producto
+	 * @param productId ID del producto
+	 * @return respuesta de la llamada
+	 */
 	@GetMapping("/{productId}")
 	public ResponseEntity<List<Review>> getAllReviewsByProduct(@PathVariable("productId") Integer productId) {
 		try {
@@ -48,6 +65,12 @@ public class ReviewController {
 		}
 	}
 
+	/**
+	 * Método POST para crear una nueva review
+	 * @param productId ID del producto
+	 * @param newReview Nueva review
+	 * @return respuesta de la llamada
+	 */
 	@PostMapping("{productId}/new")
 	public ResponseEntity<Review> createReview(@PathVariable("productId") Integer productId, @RequestBody Review newReview) {
 		try {
@@ -62,6 +85,11 @@ public class ReviewController {
 		}
 	}
 
+	/**
+	 * Método DELETE para eliminar una review
+	 * @param id ID de la review a eliminar
+	 * @return respuesta de la llamada
+	 */
 	@DeleteMapping("review/{id}")
 	public ResponseEntity<HttpStatus> deleteReview(@PathVariable("id") Integer id) {
 		try {

@@ -3,12 +3,26 @@ package com.example.cafeskon.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Clase para establecer un ID general que representa la relacion Product-Order
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 public class ProductOrderJoinId implements Serializable {
 	
+	/**
+	 * Atributo correspondiente al ID del pedido (tipo Integer)
+	 */
 	private Integer order;
 	
+	/**
+	 * Atributo correspondiente al ID del producto (tipo Integer)
+	 */
 	private Integer product;
 
+	//GETTERS Y SETTERS
+	
 	public Integer getOrder() {
 		return order;
 	}
@@ -25,6 +39,8 @@ public class ProductOrderJoinId implements Serializable {
 		this.product = product;
 	}
 
+	//HASHCODE Y EQUALS
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(order, product);

@@ -17,9 +17,16 @@ import com.example.cafeskon.model.Product;
 import com.example.cafeskon.repository.CafeUserRepository;
 import com.example.cafeskon.repository.ProductRepository;
 
+/**
+ * Clase CafeSkonApplication
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 @SpringBootApplication
 public class CafeSkonApplication implements CommandLineRunner {
 
+	
     @Autowired
     ProductRepository repoProducts;
     
@@ -32,8 +39,8 @@ public class CafeSkonApplication implements CommandLineRunner {
 	
 	@Override
     public void run(String... args) throws Exception {
-        if (repoProducts.findAll().isEmpty()) { // Si no hay productos en la base de datos
-            repoProducts.saveAll(List.of( 		// se añade una lista de productos predefinida
+        if (repoProducts.findAll().isEmpty()) { // Si no hay productos en la base de datos...
+            repoProducts.saveAll(List.of( 		// ... se añade una lista de productos predefinida
                 new Product("COOKIE", "A chocolate chip cookie with a contagious smile", 5.00, "https://i.imgur.com/5maRHsF.jpg", ECategory.COOKIE),
                 new Product("Lemon Cake", "Fluffy piece of cake bursting with fresh lemon flavor", 4.00, "https://i.imgur.com/Sr9DI3v.jpg", ECategory.CAKE),
                 new Product("Strawberry Latte", "A fruity drink made of milk, natural strawberry, whipped cream and strawberry syrup", 4.00, "https://i.imgur.com/GE4IkSo.jpg", ECategory.DRINK),
@@ -63,8 +70,8 @@ public class CafeSkonApplication implements CommandLineRunner {
                 // ...
             ));
         }
-        if(repoUsers.findAll().isEmpty()) {
-        	repoUsers.save(new CafeUser("admin", "admin@cafeskon.com", "admin1234", ERole.ADMIN));
+        if(repoUsers.findAll().isEmpty()) { //Si no hay usuarios en la base de datos...
+        	repoUsers.save(new CafeUser("admin", "admin@cafeskon.com", "admin1234", ERole.ADMIN)); //... se añade al admin
         }
     }
 	

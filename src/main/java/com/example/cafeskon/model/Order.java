@@ -11,50 +11,86 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Modelo Order correspondiente a pedido
+ * 
+ * @author Lourdes Navarro
+ *
+ */
 @Entity
 @Table(name="orders")
 public class Order {
 	
+	/**
+	 * Atributo correspondiente al ID del pedido (tipo Integer)
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	/**
+	 * Atributo correspondiente al usuario que realiza el pedido (tipo CafeUser)
+	 */
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private CafeUser customer;
 	
-//	@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-//	private List<ProductOrderJoin> productOrder;
-	
+	/**
+	 * Atributo correspondiente al nombre de la persona que realiza el pedido (tipo String)
+	 */
 	private String firstName;
 
+	/**
+	 * Atributo correspondiente al apellido de la persona que realiza el pedido (tipo String)
+	 */
 	private String lastName;
 	
+	/**
+	 * Atributo correspondiente a la direccion de la vivienda de la persona que realiza el pedido (tipo String)
+	 */
 	private String address;
 	
+	/**
+	 * Atributo correspondiente al codigo postal de la vivienda de la persona que realiza el pedido (tipo String)
+	 */
 	@Size(min = 5)
 	private String postalCode;
 	
+	/**
+	 * Atributo correspondiente al telefono de la persona que realiza el pedido (tipo String)
+	 */
 	@Size(max = 9)
 	private String phone;
 	
+	/**
+	 * Atributo correspondiente al metodo de pago con el que se va a pagar el pedido (tipo String)
+	 */
 	private String payment;
 	
+	/**
+	 * Atributo correspondiente a la fecha en la que se realiza el pedido (tipo Date)
+	 */
 	@Column(name = "order_date")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date orderDate;
 
+	/**
+	 * Constructor predeterminado
+	 */
 	public Order() {
 		
 	}
 	
+	/**
+	 * Constructor parametrizado
+	 * @param orderDto Modelo DTO del pedido
+	 */
 	public Order(OrderDto orderDto) {
 		this.id = orderDto.getId();
 		this.firstName = orderDto.getFirstName();
@@ -66,6 +102,8 @@ public class Order {
 		this.orderDate = orderDto.getOrderDate();
 	}
 
+	//GETTERS Y SETTERS
+	
 	public Integer getId() {
 		return id;
 	}
