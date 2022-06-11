@@ -65,8 +65,8 @@ public class CafeSkonApplication implements CommandLineRunner {
                 new Product("Milk Caramel", "Coffe with lot of caramel", 4.00, "https://i.imgur.com/vNLfibA.jpg", ECategory.COFFEE),
                 new Product("Orange Drink", "A fresh drink with orange flavor", 4.00, "https://i.imgur.com/263SD97.jpg", ECategory.DRINK),
                 new Product("Lemon Drink", "A lemon drink with lemon flavor", 4.00, "https://i.imgur.com/refGhzE.jpg", ECategory.DRINK),
-                new Product("Puppy Cupcakes", "Mini vanilla cupcakes with puppy shape", 6.00, "https://i.imgur.com/EsLfzbV.jpg", ECategory.CAKE),
-                new Product("Iced Espresso", "A cold espresso perfect for hotter days", 4.00, "https://i.imgur.com/gruoIMR.jpg", ECategory.COFFEE)
+                new Product("Puppy Cupcakes", "Mini vanilla cupcakes with puppy shape", 6.00, "https://i.imgur.com/EsLfzbV.jpg", ECategory.CAKE)
+                //new Product("Iced Espresso", "A cold espresso perfect for hotter days", 4.00, "https://i.imgur.com/gruoIMR.jpg", ECategory.COFFEE)
                 // ...
             ));
         }
